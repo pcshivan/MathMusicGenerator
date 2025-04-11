@@ -1,9 +1,8 @@
-// 🎹 GLOBAL SYNTH AND RECORDER SETUP
+// 🎹 Global synth and recorder
 let synth = new Tone.PolySynth().toDestination();
 let recorder = new Tone.Recorder();
 let isRecording = false;
 
-// 🔌 Connect synth to recorder for recording support
 synth.connect(recorder);
 
 // 🌀 Fibonacci generator
@@ -16,12 +15,11 @@ const fib = (n) => {
   return arr;
 };
 
-// 🎼 Scale: major intervals
 const scale = [0, 2, 4, 7, 9, 12];
 
-// 🎵 Arpeggio playback function
+// 🎵 Arpeggio playback
 const playArp = () => {
-  const fibSeq = fib(8); // First 8 Fibonacci numbers
+  const fibSeq = fib(8);
   const notes = fibSeq.map((n) => 60 + (scale[n % scale.length]));
   const now = Tone.now();
 
@@ -30,21 +28,21 @@ const playArp = () => {
   });
 };
 
-// ▶️ START ARPEGGIO
+// ▶️ Start Arpeggio
 document.getElementById("startArp").addEventListener("click", async () => {
   await Tone.start();
   console.log("🔊 Tone.js AudioContext started");
   playArp();
 });
 
-// ⏹️ STOP BUTTON
+// ⏹️ Stop
 document.getElementById("stopBtn").onclick = () => {
   synth.releaseAll();
 };
 
-// 🎙️ RECORDING BUTTON
+// 🎙️ Record
 document.getElementById("recordBtn").onclick = async () => {
-  await Tone.start(); // Ensure AudioContext is resumed
+  await Tone.start();
 
   if (!isRecording) {
     recorder.start();
@@ -52,8 +50,7 @@ document.getElementById("recordBtn").onclick = async () => {
     document.getElementById("recordBtn").textContent = "Stop Recording";
     isRecording = true;
 
-    // Play arpeggio while recording
-    playArp();
+    playArp(); // Trigger notes while recording
   } else {
     const recording = await recorder.stop();
     console.log("✅ Recording complete");
