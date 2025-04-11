@@ -14,49 +14,44 @@ const fib = (n) => {
   return arr;
 };
 
-let notesPlaying = false;
+const scale = [0, 2, 4, 7, 9, 12];
 
-// 🎵 PLAY BUTTON
-document.getElementById("startArp").addEventListener("click", async () => {
-  await Tone.start();
-  console.log("Tone.js AudioContext started");
-
-  const scale = [0, 2, 4, 7, 9, 12];
+// Common function to play arpeggio
+const playArp = () => {
   const fibSeq = fib(8);
   const notes = fibSeq.map((n) => 60 + (scale[n % scale.length]));
-
   const now = Tone.now();
   notes.forEach((note, i) => {
     synth.triggerAttackRelease(Tone.Frequency(note, "midi"), "8n", now + i * 0.3);
   });
-
-  notesPlaying = true;
-});
-
-// ⏹️ STOP BUTTON
-document.getElementById("stopBtn").onclick = () => {
-  synth.releaseAll();
-  notesPlaying = false;
 };
 
-// 🎙️ RECORDING LOGIC
+// 🎵 START ARPEGGIO
+document.getElementById("startArp").addEventListener("click", async () => {
+  await Tone.start();
+  console.log("🔊 Tone.js AudioContext started");
+  playArp();
+});
+
+// ⏹️ STOP
+document.getElementById("stopBtn").onclick = () => {
+  synth.releaseAll();
+};
+
+// 🎙️ RECORDING
 document.getElementById("recordBtn").onclick = async () => {
+  await Tone.start();
+
   if (!isRecording) {
-    await Tone.start(); // Ensure audio context is resumed
+    console.log("🔴 Recording started...");
     recorder.start();
     document.getElementById("recordBtn").textContent = "Stop Recording";
     isRecording = true;
 
-    // Trigger notes immediately after starting recorder
-    const scale = [0, 2, 4, 7, 9, 12];
-    const fibSeq = fib(8);
-    const notes = fibSeq.map((n) => 60 + (scale[n % scale.length]]);
-    const now = Tone.now();
-
-    notes.forEach((note, i) => {
-      synth.triggerAttackRelease(Tone.Frequency(note, "midi"), "8n", now + i * 0.3);
-    });
+    // Play arpeggio while recording
+    playArp();
   } else {
+    console.log("⏹️ Stopping recording...");
     const recording = await recorder.stop();
     const url = URL.createObjectURL(await recording);
     const anchor = document.createElement("a");
@@ -65,6 +60,7 @@ document.getElementById("recordBtn").onclick = async () => {
 
     document.getElementById("downloadBtn").disabled = false;
     document.getElementById("downloadBtn").onclick = () => anchor.click();
+
     document.getElementById("recordBtn").textContent = "Start Recording";
     isRecording = false;
   }
