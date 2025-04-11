@@ -1,5 +1,5 @@
 // 🎹 Global synth and recorder
-let synth = new Tone.PolySynth().toDestination();
+//let synth = new Tone.PolySynth().toDestination();
 let recorder = new Tone.Recorder();
 let isRecording = false;
 
@@ -15,25 +15,22 @@ const fib = (n) => {
   return arr;
 };
 
-const scale = [0, 2, 4, 7, 9, 12];
 
-// 🎵 Arpeggio playback
-const playArp = () => {
-  const fibSeq = fib(8);
+// ▶️ Start Arpeggio
+document.getElementById("startArp").addEventListener("click", async () => {
+  await Tone.start();
+  console.log("🔊 Tone.js AudioContext started");
+
+  const scale = [0, 2, 4, 7, 9, 12];
+  const fibSeq = [0, 1, 1, 2, 3, 5, 8, 13];
   const notes = fibSeq.map((n) => 60 + (scale[n % scale.length]));
   const now = Tone.now();
 
   notes.forEach((note, i) => {
     synth.triggerAttackRelease(Tone.Frequency(note, "midi"), "8n", now + i * 0.3);
   });
-};
-
-// ▶️ Start Arpeggio
-document.getElementById("startArp").addEventListener("click", async () => {
-  await Tone.start();
-  console.log("🔊 Tone.js AudioContext started");
-  playArp();
 });
+
 
 // ⏹️ Stop
 document.getElementById("stopBtn").onclick = () => {
