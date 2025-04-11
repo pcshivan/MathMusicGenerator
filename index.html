@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Tone.js Test</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
+</head>
+<body style="text-align: center; font-family: sans-serif; padding-top: 100px; background: #111; color: #eee;">
+  <h1>Tone.js Synth Test 🎹</h1>
+  <button id="playBtn" style="padding: 1em; font-size: 1.2em;">Click to Play Sound</button>
+
+  <script>
+    const synth = new Tone.Synth().toDestination();
+
+    document.getElementById("playBtn").addEventListener("click", async () => {
+      await Tone.start();
+      console.log("✅ Tone.js AudioContext started");
+
+      synth.triggerAttackRelease("C4", "2n");
+    });
+  </script>
+</body>
+</html>
