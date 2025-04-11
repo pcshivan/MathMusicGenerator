@@ -17,24 +17,22 @@ const fib = (n) => {
 let seq;
 
 // 🎵 PLAY BUTTON
-document.getElementById("playBtn").onclick = async () => {
+document.getElementById("startArp").addEventListener("click", async () => {
   await Tone.start();
+  console.log("Tone.js AudioContext started");
 
-  // ✅ Debug: check audio context
-  console.log("Tone.js audio context started:", Tone.context.state);
+  const synth = new Tone.PolySynth(Tone.Synth).toDestination();
 
-  // ✅ Debug: test sine beep
-  const osc = new Tone.Oscillator(440, "sine").toDestination();
-  osc.start();
-  setTimeout(() => osc.stop(), 1000); // stop beep after 1 sec
+  const scale = [0, 2, 4, 7, 9, 12];
+  const fib = [0, 1, 1, 2, 3, 5, 8, 13];
+  const notes = fib.map((n, i) => 60 + (scale[n % scale.length]));
 
-  // 🎼 Generate Fibonacci-based MIDI notes
-  const notes = fib(16).map(n => 60 + (n % 12)); // C major-ish
-  let now = Tone.now();
-  notes.forEach((n, i) => {
-    synth.triggerAttackRelease(Tone.Frequency(n, "midi"), "8n", now + i * 0.3);
+  const now = Tone.now();
+  notes.forEach((note, i) => {
+    synth.triggerAttackRelease(Tone.Frequency(note, "midi"), "8n", now + i * 0.3);
   });
-};
+});
+
 
 // ⏹️ STOP BUTTON
 document.getElementById("stopBtn").onclick = () => {
