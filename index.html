@@ -1,37 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Harmonic Arp Lab</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://cdn.jsdelivr.net/npm/tone"></script>
-  <script src="https://unpkg.com/hydra-synth"></script>
-  <script src="https://gibberwocky.cc/dist/gibberwocky.browser.js"></script>
+  <meta charset="UTF-8" />
+  <title>Math Music Generator</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="controls">
-   <button id="startArp">Start Arpeggio</button>
-  <button id="stopBtn">Stop</button>
-  <button id="recordBtn">Start Recording</button>
-  <button id="downloadBtn" disabled>Download</button>
+  <h1>Math Music Generator 🎼</h1>
 
-    <button id="saveCodeBtn">Save Code</button>
-    <button id="loadCodeBtn">Load Code</button>
+  <div class="controls">
+    <button id="startArp">Start Arpeggio</button>
+    <button id="stopBtn">Stop</button>
+    <button id="recordBtn">Start Recording</button>
+    <button id="downloadBtn" disabled>Download</button>
   </div>
 
-  <div id="editor">
-    <textarea id="codeArea" rows="12" cols="40">
-// Try this:
-a = Synth('square')
-Seq(a, [0,2,4,7].map(n => n + 60), 1/4)
-    </textarea>
-    <button id="runCodeBtn">Run Code</button>
-  </div>
-
-  <canvas id="hydra-canvas"></canvas>
+  <canvas id="visuals"></canvas>
 
   <script src="scripts/toneArp.js"></script>
-  <script src="scripts/hydraVisuals.js"></script>
-  <script src="scripts/gibberPanel.js"></script>
 </body>
 </html>
